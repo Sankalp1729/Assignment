@@ -1,0 +1,23 @@
+# Core dependencies
+python-dotenv>=1.0.0          # Secure environment variable management
+google-generativeai>=0.3.0    # Google Gemini API
+pymupdf>=1.23.0              # PyMuPDF for PDF text/image extraction
+jinja2>=3.1.0                # HTML template rendering
+pillow>=10.0.0               # Image processing
+pdf2image>=1.16.0            # PDF image extraction
+pydantic>=2.0.0              # Data validation
+reportlab>=4.0.0             # PDF generation
+python-dateutil>=2.8.2       # Date utilities
+rapidfuzz>=3.0.0             # Fuzzy string matching for intelligent area merging
+
+# Optional: For advanced features
+pytesseract>=0.3.10       # OCR support (requires system Tesseract installation)
+opencv-python>=4.8.0      # Advanced image processing
+pdfplumber>=0.9.0         # Alternative PDF processing
+
+# Development & testing
+pytest>=7.0.0
+pytest-cov>=4.0.0
+black>=23.0.0
+flake8>=6.0.0
+mypy>=1.0.0
