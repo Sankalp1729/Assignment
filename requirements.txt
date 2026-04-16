@@ -1,3 +1,10 @@
+# Web Framework
+fastapi>=0.104.0              # Fast, modern Python web framework
+uvicorn>=0.24.0               # ASGI server for production
+pydantic>=2.0.0               # Data validation
+python-multipart>=0.0.6       # Form/file upload support
+cors>=1.0.1                   # CORS middleware
+
 # Core dependencies
 python-dotenv>=1.0.0          # Secure environment variable management
 google-generativeai>=0.3.0    # Google Gemini API
@@ -5,7 +12,6 @@ pymupdf>=1.23.0              # PyMuPDF for PDF text/image extraction
 jinja2>=3.1.0                # HTML template rendering
 pillow>=10.0.0               # Image processing
 pdf2image>=1.16.0            # PDF image extraction
-pydantic>=2.0.0              # Data validation
 reportlab>=4.0.0             # PDF generation
 python-dateutil>=2.8.2       # Date utilities
 rapidfuzz>=3.0.0             # Fuzzy string matching for intelligent area merging
@@ -21,3 +27,4 @@ pytest-cov>=4.0.0
 black>=23.0.0
 flake8>=6.0.0
 mypy>=1.0.0
+httpx>=0.25.0             # HTTP client for testing
