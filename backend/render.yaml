@@ -3,6 +3,7 @@ services:
     name: ai-ddr-backend
     runtime: python
     pythonVersion: 3.9
+    rootDir: backend  # Set Root Directory to "backend" in Render dashboard
     
     # Build and start commands
     buildCommand: pip install -r requirements.txt
