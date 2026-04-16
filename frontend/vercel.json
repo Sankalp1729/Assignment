@@ -3,11 +3,7 @@
   "outputDirectory": ".next",
   "installCommand": "npm install",
   "framework": "nextjs",
-  "env": [
-    {
-      "key": "NEXT_PUBLIC_API_URL",
-      "value": "https://assignment-n57e.onrender.com",
-      "type": "plaintext"
-    }
-  ]
+  "env": {
+    "NEXT_PUBLIC_API_URL": "https://assignment-n57e.onrender.com"
+  }
 }
