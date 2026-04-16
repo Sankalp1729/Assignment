@@ -37,6 +37,15 @@ outputs/
 *.html
 ddr_*.pdf
 
+# EXCEPTION: Keep important project files
+!package.json
+!package-lock.json
+!tsconfig.json
+!next.config.js
+!postcss.config.js
+!vercel.json
+!tailwind.config.js
+
 # Temp
 *.tmp
 temp/
