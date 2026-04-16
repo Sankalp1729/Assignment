@@ -49,7 +49,7 @@ origins = [
     "http://localhost:8000",           # Local FastAPI dev
     "https://localhost:3000",
     "https://localhost:8000",
-    "https://yourfrontend.vercel.app", # Production Vercel URL (update this)
+    "https://*.vercel.app",            # All Vercel preview & production
 ]
 
 app.add_middleware(
