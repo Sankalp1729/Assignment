@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  @apply transition-colors;
+}
+
+body {
+  @apply bg-slate-950 text-slate-50;
+}
+
+a {
+  @apply hover:text-blue-400;
+}
+
+input[type="file"] {
+  @apply cursor-pointer;
+}
+
+button:disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+/* 🎨 Custom Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+/* 🎨 Custom Styles */
+.glass-effect {
+  @apply backdrop-blur-md bg-white/10 border border-white/20;
+}
+
+.gradient-text {
+  @apply bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent;
+}
+
+.card-hover {
+  @apply transition-all duration-200 hover:shadow-lg hover:scale-105;
+}
+
+/* 📱 Responsive Improvements */
+@media (max-width: 768px) {
+  .grid-cols-3 {
+    @apply grid-cols-1;
+  }
+  
+  .md\:grid-cols-2 {
+    @apply grid-cols-1;
+  }
+}
+
+/* 🎯 Loading Spinner */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+/* ✨ Smooth Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-slate-900;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-slate-700 rounded-full hover:bg-slate-600;
+}

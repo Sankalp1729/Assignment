@@ -1,0 +1,42 @@
+# Environment variables (contains API keys - NEVER commit!)
+.env
+.env.local
+.env.*.local
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Output
+outputs/
+*.json
+*.html
+ddr_*.pdf
+
+# Temp
+*.tmp
+temp/

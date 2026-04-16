@@ -1,0 +1,48 @@
+services:
+  - type: web
+    name: ai-ddr-backend
+    runtime: python
+    pythonVersion: 3.9
+    
+    # Build and start commands
+    buildCommand: pip install -r requirements.txt
+    startCommand: bash start.sh
+    
+    # Environment
+    plan: free  # Change to starter/standard for production
+    region: us-west  # Change as needed
+    
+    # Environment variables
+    envVars:
+      - key: GEMINI_API_KEY
+        scope: run
+        sync: false  # Set this manually in Render dashboard
+      
+      - key: ENVIRONMENT
+        scope: run
+        value: production
+      
+      - key: FRONTEND_URL
+        scope: run
+        value: https://your-frontend.vercel.app
+    
+    # Auto-deploy on push
+    autoDeploy: true
+    
+    # Health check
+    healthCheck:
+      path: /health
+      interval: 30
+      timeout: 5
+      startFailureThreshold: 10
+      startSuccessThreshold: 1
+    
+    # Disk configuration
+    disk:
+      name: outputs
+      mountPath: /app/outputs
+      sizeGB: 1
+
+# You can add multiple services here if deploying full monorepo from single repo
+# Just ensure root directory is set correctly in Render dashboard
+
