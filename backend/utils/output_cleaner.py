@@ -20,12 +20,35 @@ def enhance_observations(observations):
     cleaned = []
 
     for item in observations:
+        area = clean_area(item.get("area"))
+        ins_issue = clean_issue(item.get("inspection_issue", item.get("issue")))
+        therm_issue = clean_issue(item.get("thermal_issue"))
+        
+        # Polish Thermal Anomaly generic strings into context-aware mapping
+        if "thermal anomaly" in therm_issue.lower():
+            a = area.lower()
+            if "wall" in a:
+                # E.g. Wall -> Heat loss
+                therm_issue = "Heat loss and thermal irregularity detected"
+            elif "bedroom" in a or "ceiling" in a or "floor" in a:
+                # E.g. Ceiling/Floor -> moisture related
+                if "moisture" in ins_issue.lower() or "water" in ins_issue.lower() or "leak" in ins_issue.lower():
+                     therm_issue = "Cold anomaly indicating water seepage"
+                else:
+                     therm_issue = "Cold spot confirming dampness"
+            elif "roof" in a or "kitchen" in a:
+                # E.g. Roof -> insulation
+                therm_issue = "Insulation inefficiency detected"
+            elif "foundation" in a:
+                # E.g. Foundation -> soil/damp
+                therm_issue = "Thermal anomaly confirming internal dampness"
+
         cleaned.append({
             "source": item.get("source", "unknown"),
             "page": item.get("page", 1),
-            "area": clean_area(item.get("area")),
-            "inspection_issue": clean_issue(item.get("inspection_issue", item.get("issue"))),
-            "thermal_issue": clean_issue(item.get("thermal_issue")),
+            "area": area,
+            "inspection_issue": ins_issue,
+            "thermal_issue": therm_issue,
             "description": clean_description(item.get("description")),
             "severity": item.get("severity", "Medium"),
             "severity_hint": item.get("severity_hint", "unknown")

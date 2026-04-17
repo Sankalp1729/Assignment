@@ -153,7 +153,27 @@ def merge_observations(
                 "similarity_score": 0
             })
     
-    return merged
+    # Deduplicate merged array by area
+    grouped = {}
+    for item in merged:
+        area = item["area"]
+        if area not in grouped:
+            grouped[area] = item
+        else:
+            # Combine issues seamlessly
+            curr_i = grouped[area]["inspection_issue"]
+            if item["inspection_issue"] != "Not Available" and item["inspection_issue"] not in curr_i:
+                grouped[area]["inspection_issue"] = f"{curr_i} and {item['inspection_issue'].lower()}" if curr_i != "Not Available" else item["inspection_issue"]
+                
+            curr_t = grouped[area]["thermal_issue"]
+            if item["thermal_issue"] != "Not Available" and item["thermal_issue"] not in curr_t:
+                grouped[area]["thermal_issue"] = f"{curr_t} and {item['thermal_issue'].lower()}" if curr_t != "Not Available" else item["thermal_issue"]
+                
+            # Escalate severity if either is major
+            if item["severity_hint"] == "major":
+                grouped[area]["severity_hint"] = "major"
+
+    return list(grouped.values())
 
 
 def detect_conflicts(merged_data: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
