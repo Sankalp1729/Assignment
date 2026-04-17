@@ -111,8 +111,9 @@ def merge_observations(
             therm_issue = therm.get("issue", "unknown")
             therm_description = therm.get("description", "")
             
+            final_area = ins_area if ins_area.strip() and ins_area.lower() not in ["", "general area", "general", "unknown"] else therm.get("area", "unknown")
             merged.append({
-                "area": ins_area if ins_area.strip() != "" else therm.get("area", "unknown"),
+                "area": final_area,
                 "inspection_issue": ins_issue,
                 "thermal_issue": therm_issue,
                 "description": ins_description + " | " + therm_description,

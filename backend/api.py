@@ -27,6 +27,7 @@ try:
     from utils.merger import merge_observations, detect_conflicts
     from utils.severity import calculate_severity
     from utils.ddr_generator import generate_ddr_report
+    from utils.output_cleaner import enhance_observations, format_ddr_report
 except ImportError as e:
     print(f"Warning: Could not import all utilities: {e}")
 
@@ -254,7 +255,8 @@ async def generate_ddr(
         # STEP 6: Generate DDR Report
         # ====================================================================
         try:
-            report = generate_ddr_report(merged, conflicts)
+            merged = enhance_observations(merged)
+            report = format_ddr_report(merged)
         except Exception as e:
             report = {
                 "error": str(e),
