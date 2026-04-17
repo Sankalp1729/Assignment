@@ -39,7 +39,7 @@ def enhance_observations(observations):
             elif "bedroom" in a or "ceiling" in a or "floor" in a:
                 # E.g. Ceiling/Floor -> moisture related
                 if "moisture" in ins_issue.lower() or "water" in ins_issue.lower() or "leak" in ins_issue.lower():
-                     therm_issue = "Cold anomaly indicating water seepage"
+                     therm_issue = "Cold anomaly confirming seepage"
                 else:
                      therm_issue = "Cold spot confirming dampness"
             elif "roof" in a or "kitchen" in a:
@@ -69,8 +69,10 @@ def format_ddr_report(merged_data):
     # Property Summary
     areas = list(set([item["area"] for item in merged_data if item.get("area")]))
     if areas:
+        num_areas = len(areas)
+        area_word = "area" if num_areas == 1 else "key areas"
         report["Property Issue Summary"] = (
-            f"The property inspection identified issues across {len(areas)} area(s), "
+            f"The property inspection identified critical issues across {num_areas} {area_word}, "
             f"including {', '.join(areas)}."
         )
     else:
