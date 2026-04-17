@@ -87,36 +87,68 @@ Text:
         observations = []
         text_lower = page_text.lower()
         
-        # Detect areas using headings (simple rule)
-        area_matches = re.findall(r"(living room|bedroom|kitchen|bathroom|wall|ceiling|floor|exterior|balcony|staircase|roof|foundation)", text_lower)
-        if not area_matches:
-            area_matches = ["General Area"]
+        # Define area + keywords mapping
+        rules = {
+            "Living Room": ["living room", "lounge"],
+            "Bedroom": ["bedroom"],
+            "Kitchen": ["kitchen"],
+            "Bathroom": ["bathroom", "washroom"],
+            "Balcony": ["balcony"],
+            "Wall": ["wall"],
+            "Ceiling": ["ceiling"],
+            "Floor": ["floor"],
+            "Exterior": ["exterior"],
+            "Roof": ["roof"],
+            "Foundation": ["foundation", "basement"]
+        }
 
-        # Detect issues
-        issues = []
-        if "crack" in text_lower or "fracture" in text_lower:
-            issues.append("Crack")
-        if "leak" in text_lower or "moisture" in text_lower or "damp" in text_lower or "water" in text_lower:
-            issues.append("Moisture/Leakage")
-        if "thermal" in text_lower or "temperature" in text_lower or "heat" in text_lower or "cold" in text_lower:
-            issues.append("Thermal anomaly")
-        if "insulation" in text_lower:
-            issues.append("Insulation issue")
-        if "structural" in text_lower:
-            issues.append("Structural defect")
-            
-        if not issues:
-            issues.append("Detected issue")
-
-        # Create observations
-        for area in set(area_matches):
-            for issue in issues:
-                observations.append({
-                    "area": area.title(),
-                    "issue": issue,
-                    "description": f"Extracted automatically: {issue} detected in {area.title()}.",
-                    "severity_hint": "major" if issue in ["Crack", "Moisture/Leakage", "Structural defect"] else "minor"
-                })
+        raw_observations = []
+        for area, keywords in rules.items():
+            if any(k in text_lower for k in keywords):
+                # Detect ONLY relevant issues
+                if "crack" in text_lower or "fracture" in text_lower:
+                    raw_observations.append({
+                        "area": area,
+                        "issue": "Crack",
+                        "description": f"Extracted automatically: Crack or fracture detected in {area}.",
+                        "severity_hint": "major"
+                    })
+                elif "leak" in text_lower or "moisture" in text_lower or "damp" in text_lower or "water" in text_lower:
+                    raw_observations.append({
+                        "area": area,
+                        "issue": "Moisture/Leakage",
+                        "description": f"Extracted automatically: Moisture or leakage detected in {area}.",
+                        "severity_hint": "major"
+                    })
+                elif "structur" in text_lower:
+                    raw_observations.append({
+                        "area": area,
+                        "issue": "Structural defect",
+                        "description": f"Extracted automatically: Structural defect detected in {area}.",
+                        "severity_hint": "major"
+                    })
+                elif "thermal" in text_lower or "temperature" in text_lower or "heat" in text_lower or "cold" in text_lower:
+                    raw_observations.append({
+                        "area": area,
+                        "issue": "Thermal anomaly",
+                        "description": f"Extracted automatically: Thermal irregularity detected in {area}.",
+                        "severity_hint": "minor"
+                    })
+                elif "insulation" in text_lower:
+                    raw_observations.append({
+                        "area": area,
+                        "issue": "Insulation issue",
+                        "description": f"Extracted automatically: Insulation issue detected in {area}.",
+                        "severity_hint": "minor"
+                    })
+                    
+        # Remove duplicates
+        seen = set()
+        for obs in raw_observations:
+            key = (obs["area"], obs["issue"])
+            if key not in seen:
+                seen.add(key)
+                observations.append(obs)
 
     print("FINAL OBS:", observations)
     return observations
