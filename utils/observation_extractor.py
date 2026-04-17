@@ -23,18 +23,25 @@ def extract_observations(page_text: str, source_type: str = "inspection") -> Lis
         - severity_hint: Severity level (minor/major/unknown)
     """
     
+    # Adjust rules based on source type
+    if source_type == "thermal":
+        context_rule = "- Since this is a THERMAL scan, the issue must STRICTLY use thermal terminology (e.g., 'Thermal anomaly', 'Cold spot', 'Heat loss', 'Insulation defect'). DO NOT use 'Crack' or 'Moisture'."
+    else:
+        context_rule = "- Since this is a PHYSICAL INSPECTION, the issue must STRICTLY use structural/physical terminology (e.g., 'Crack', 'Moisture/Leakage', 'Structural defect', 'Peeling paint'). DO NOT use 'Thermal anomaly' or 'Cold spot'."
+
     prompt = f"""
 Extract detailed observations from the text.
 
 Each observation must include:
 - area (specific location like "Living Room Wall")
-- issue (specific problem like "crack", "leakage")
+- issue (specific problem like "crack", "leakage", "thermal anomaly")
 - description (clear explanation from text)
 - severity_hint (minor/major based on wording)
 
 STRICT RULES:
 - Use ONLY information from text
 - DO NOT use generic words like "detected issue"
+{context_rule}
 - DO NOT return placeholders
 - Return ONLY JSON list
 
