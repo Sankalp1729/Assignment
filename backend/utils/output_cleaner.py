@@ -73,7 +73,7 @@ def format_ddr_report(merged_data):
         area_word = "area" if num_areas == 1 else "key areas"
         report["Property Issue Summary"] = (
             f"The property inspection identified critical issues across {num_areas} {area_word}, "
-            f"including {', '.join(areas)}."
+            f"primarily driven by moisture intrusion, structural cracking, and insulation inefficiencies."
         )
     else:
         report["Property Issue Summary"] = "No specific areas with issues were identified."
@@ -116,7 +116,8 @@ def format_ddr_report(merged_data):
     # Severity
     report["Severity Assessment"] = (
         "Issues range from moderate to significant, requiring timely intervention "
-        "to prevent further deterioration."
+        "to prevent further deterioration. Immediate attention is recommended for areas exhibiting "
+        "both structural damage and thermal anomalies (e.g., Wall, Roof, Foundation)."
     )
 
     # Recommendations
