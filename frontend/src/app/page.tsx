@@ -39,6 +39,11 @@ export default function DDRGenerator() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, setter: (file: File | null) => void) => {
     const file = e.target.files?.[0];
     if (file) {
+      // STEP 1: Debug file object immediately
+      console.log('File selected:', file);
+      console.log('File name:', file.name);
+      console.log('File size:', file.size);
+      
       const validationError = validateFile(file);
       if (validationError) {
         setError(`✗ ${validationError}`);
@@ -46,6 +51,7 @@ export default function DDRGenerator() {
       }
       setError(null);
       setter(file);
+      console.log('File set successfully');
     }
   };
 
@@ -57,33 +63,51 @@ export default function DDRGenerator() {
       return;
     }
 
+    // STEP 2: Verify file objects before sending
+    console.log('Inspection:', inspection);
+    console.log('Inspection size:', inspection.size);
+    console.log('Inspection name:', inspection.name);
+    console.log('Thermal:', thermal);
+    console.log('Thermal size:', thermal.size);
+    console.log('Thermal name:', thermal.name);
+
+    // Check for zero-size files
+    if (inspection.size === 0 || thermal.size === 0) {
+      setError('✗ One or more files are empty. Please upload valid PDFs.');
+      return;
+    }
+
     setLoading(true);
     setError(null);
 
     try {
+      // STEP 3: Create FormData with filename parameter
       const formData = new FormData();
-      formData.append('inspection', inspection);
-      formData.append('thermal', thermal);
+      formData.append('inspection', inspection, inspection.name);
+      formData.append('thermal', thermal, thermal.name);
 
+      console.log('FormData created successfully');
+
+      // STEP 4: Remove manual Content-Type header
       const response = await axios.post(
         `${API_URL}/api/v1/generate-ddr`,
         formData,
         {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
           timeout: 300000, // 5 minutes
         }
       );
 
+      console.log('API Response:', response.data);
       setReport(response.data);
       setError(null);
     } catch (err) {
       if (axios.isAxiosError(err)) {
+        console.error('API Error:', err.response?.data);
         setError(
           `✗ Error: ${err.response?.data?.detail || err.message}`
         );
       } else {
+        console.error('Unexpected Error:', err);
         setError('✗ An unexpected error occurred');
       }
       setReport(null);
