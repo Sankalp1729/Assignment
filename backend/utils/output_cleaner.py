@@ -13,7 +13,7 @@ def clean_issue(issue):
 def clean_description(desc):
     if not desc or "PDF Content" in desc or desc == "No description":
         return "Details derived from inspection and thermal analysis."
-    return desc
+    return str(desc).replace("Extracted automatically: ", "").strip()
 
 
 def enhance_observations(observations):
