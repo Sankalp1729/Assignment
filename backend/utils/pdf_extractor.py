@@ -276,3 +276,45 @@ def extract_text_all(pdf_path: str) -> str:
     pages = extract_text_by_page(pdf_path)
     return " ".join([p.get("text", "") for p in pages])
 
+
+def extract_images_base64(pdf_path: str) -> List[Dict[str, Any]]:
+    """
+    Extract images from PDF and return as base64 strings.
+    
+    Args:
+        pdf_path: Path to PDF file
+        
+    Returns:
+        List of dicts with page_num, image_index, and base64 string
+    """
+    import fitz  # PyMuPDF
+    import base64
+    
+    doc = fitz.open(pdf_path)
+    extracted_images = []
+    
+    for page_num in range(len(doc)):
+        page = doc.load_page(page_num)
+        image_list = page.get_images(full=True)
+        
+        for img_index, img in enumerate(image_list):
+            xref = img[0]
+            try:
+                base_image = doc.extract_image(xref)
+                image_bytes = base_image["image"]
+                image_ext = base_image["ext"]
+                
+                # Convert to base64
+                b64_str = base64.b64encode(image_bytes).decode('utf-8')
+                data_uri = f"data:image/{image_ext};base64,{b64_str}"
+                
+                extracted_images.append({
+                    "page_num": page_num + 1,
+                    "img_index": img_index + 1,
+                    "data_uri": data_uri
+                })
+            except Exception as e:
+                print(f"Warning: Failed to extract image {img_index} on page {page_num + 1}: {e}")
+                
+    return extracted_images
+

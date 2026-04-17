@@ -22,7 +22,7 @@ sys.path.insert(0, str(backend_root))
 
 # Import utilities from existing codebase
 try:
-    from utils.pdf_extractor import extract_text_by_page, PDFExtractor
+    from utils.pdf_extractor import extract_text_by_page, extract_images_base64, PDFExtractor
     from utils.observation_extractor import extract_observations
     from utils.merger import merge_observations, detect_conflicts
     from utils.severity import calculate_severity
@@ -174,11 +174,15 @@ async def generate_ddr(
             raise HTTPException(status_code=400, detail=f"Failed to save files: {str(e)}")
         
         # ====================================================================
-        # STEP 1: Extract Text from PDFs
+        # STEP 1: Extract Text & Images from PDFs
         # ====================================================================
         try:
             inspection_pages = extract_text_by_page(inspection_path)
             thermal_pages = extract_text_by_page(thermal_path)
+            
+            # Extract images directly as base64 strings
+            inspection_images = extract_images_base64(inspection_path)
+            thermal_images = extract_images_base64(thermal_path)
         except Exception as e:
             raise HTTPException(status_code=400, detail=f"PDF extraction failed: {str(e)}")
         
@@ -252,11 +256,49 @@ async def generate_ddr(
             print(f"Warning: Conflict detection failed: {e}")
         
         # ====================================================================
-        # STEP 6: Generate DDR Report
+        # STEP 6: Generate DDR Report (with Images)
         # ====================================================================
         try:
             merged = enhance_observations(merged)
+            
+            # Match extracted images linearly to observations that have active findings
+            ins_idx = 0
+            thm_idx = 0
+            
+            for item in merged:
+                item["images"] = []
+                
+                # Check if it has a valid physical issue
+                if item.get("inspection_issue") and item.get("inspection_issue") != "No specific issue identified":
+                    if ins_idx < len(inspection_images):
+                        item["images"].append({
+                            "type": "inspection",
+                            "data_uri": inspection_images[ins_idx]["data_uri"]
+                        })
+                        ins_idx += 1
+                    else:
+                        item["images"].append({
+                            "type": "inspection",
+                            "data_uri": "Image Not Available"
+                        })
+                        
+                # Check if it has a valid thermal anomaly
+                if item.get("thermal_issue") and item.get("thermal_issue") != "No specific issue identified":
+                    if thm_idx < len(thermal_images):
+                        item["images"].append({
+                            "type": "thermal",
+                            "data_uri": thermal_images[thm_idx]["data_uri"]
+                        })
+                        thm_idx += 1
+                    else:
+                        item["images"].append({
+                            "type": "thermal",
+                            "data_uri": "Image Not Available"
+                        })
+                        
+            # Format report text
             report = format_ddr_report(merged)
+            
         except Exception as e:
             report = {
                 "error": str(e),
