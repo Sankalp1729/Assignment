@@ -11,9 +11,15 @@ def clean_issue(issue):
 
 
 def clean_description(desc):
-    if not desc or "PDF Content" in desc or desc == "No description":
-        return "Details derived from inspection and thermal analysis."
-    return str(desc).replace("Extracted automatically: ", "").strip()
+    if not desc or "PDF Content" in str(desc) or str(desc) == "No description":
+        return ""
+        
+    s = str(desc).replace("Extracted automatically: ", "").strip()
+    # If the text is merged/duplicated raw extracts, hide it
+    if "|" in s:
+        return ""
+        
+    return s
 
 
 def enhance_observations(observations):
