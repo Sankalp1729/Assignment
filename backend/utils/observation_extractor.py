@@ -112,7 +112,10 @@ Text:
 
         # Analyze by sentences to ensure issue is actually related to the area
         import re
-        sentences = re.split(r'[.!?\n|]', text_lower)
+        # Convert physical PDF newlines to spaces to preserve logical sentences
+        clean_text = text_lower.replace('\n', ' ')
+        sentences = re.split(r'[.!?|]', clean_text)
+        
         raw_observations = []
 
         for sentence in sentences:
@@ -153,7 +156,7 @@ Text:
         # If sentence analysis fails, create one realistic fallback per document
         if not raw_observations:
             for area, keywords in rules.items():
-                if any(k in text_lower for k in keywords):
+                if any(k in clean_text for k in keywords):
                     if source_type == "thermal":
                         if area in ["Bathroom", "Kitchen"]:
                             issue_name = "Cold spot"
