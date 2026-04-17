@@ -143,6 +143,13 @@ async def generate_ddr(
         HTTPException: If file processing fails
     """
     
+    # ★★★ STEP 5: FILE OBJECT DEBUG ★★★
+    print(f"\n[DEBUG] Files received:")
+    print(f"  Inspection filename: {inspection.filename}")
+    print(f"  Inspection content_type: {inspection.content_type}")
+    print(f"  Thermal filename: {thermal.filename}")
+    print(f"  Thermal content_type: {thermal.content_type}")
+    
     document_id = f"ddr_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
     
     try:
@@ -155,10 +162,12 @@ async def generate_ddr(
         try:
             with open(inspection_path, "wb") as f:
                 content = await inspection.read()
+                print(f"[DEBUG] Inspection file size: {len(content)} bytes")
                 f.write(content)
             
             with open(thermal_path, "wb") as f:
                 content = await thermal.read()
+                print(f"[DEBUG] Thermal file size: {len(content)} bytes")
                 f.write(content)
         except Exception as e:
             raise HTTPException(status_code=400, detail=f"Failed to save files: {str(e)}")
