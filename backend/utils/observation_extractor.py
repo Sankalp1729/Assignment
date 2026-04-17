@@ -83,32 +83,40 @@ Text:
         observations = []
 
     if not observations:
+        import re
         observations = []
         text_lower = page_text.lower()
         
-        if "crack" in text_lower:
-            observations.append({
-                "area": "Wall",
-                "issue": "Crack",
-                "description": page_text[:200],
-                "severity_hint": "minor"
-            })
+        # Detect areas using headings (simple rule)
+        area_matches = re.findall(r"(living room|bedroom|kitchen|bathroom|wall|ceiling|floor|exterior|balcony|staircase|roof|foundation)", text_lower)
+        if not area_matches:
+            area_matches = ["General Area"]
+
+        # Detect issues
+        issues = []
+        if "crack" in text_lower or "fracture" in text_lower:
+            issues.append("Crack")
+        if "leak" in text_lower or "moisture" in text_lower or "damp" in text_lower or "water" in text_lower:
+            issues.append("Moisture/Leakage")
+        if "thermal" in text_lower or "temperature" in text_lower or "heat" in text_lower or "cold" in text_lower:
+            issues.append("Thermal anomaly")
+        if "insulation" in text_lower:
+            issues.append("Insulation issue")
+        if "structural" in text_lower:
+            issues.append("Structural defect")
             
-        if "leak" in text_lower or "moisture" in text_lower:
-            observations.append({
-                "area": "Bathroom Wall",
-                "issue": "Leakage",
-                "description": page_text[:200],
-                "severity_hint": "major"
-            })
-            
-        if "thermal" in text_lower or "temperature" in text_lower:
-            observations.append({
-                "area": "General",
-                "issue": "Thermal anomaly",
-                "description": page_text[:200],
-                "severity_hint": "unknown"
-            })
+        if not issues:
+            issues.append("Detected issue")
+
+        # Create observations
+        for area in set(area_matches):
+            for issue in issues:
+                observations.append({
+                    "area": area.title(),
+                    "issue": issue,
+                    "description": f"Extracted automatically: {issue} detected in {area.title()}.",
+                    "severity_hint": "major" if issue in ["Crack", "Moisture/Leakage", "Structural defect"] else "minor"
+                })
 
     print("FINAL OBS:", observations)
     return observations
