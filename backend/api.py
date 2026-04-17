@@ -43,18 +43,10 @@ app = FastAPI(
     openapi_url="/openapi.json",
 )
 
-# Configure CORS for frontend
-origins = [
-    "http://localhost:3000",           # Local Next.js dev
-    "http://localhost:8000",           # Local FastAPI dev
-    "https://localhost:3000",
-    "https://localhost:8000",
-    "https://*.vercel.app",            # All Vercel preview & production
-]
-
+# Configure CORS for frontend - Allow all origins (for now)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],  # Allow all origins
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
