@@ -5,6 +5,7 @@ Loads API key securely from environment.
 
 import os
 import json
+import time
 from pathlib import Path
 from typing import Optional, Dict, Any
 from dotenv import load_dotenv
@@ -230,12 +231,13 @@ def ask_gemini(prompt: str) -> str:
     return _client.ask(prompt)
 
 
-def ask_gemini_json(prompt: str) -> Any:
+def ask_gemini_json(prompt: str, retries: int = 3) -> Any:
     """
     Quick function to ask Gemini for JSON using global client.
     
     Args:
         prompt: Prompt requesting JSON
+        retries: Number of retries on parse failure
         
     Returns:
         Parsed JSON list
@@ -245,15 +247,25 @@ def ask_gemini_json(prompt: str) -> Any:
         if not init_gemini():
             return []
             
-    response_text = _client.ask(prompt)
-    print("RAW GEMINI RESPONSE:", response_text)  # DEBUG
-    
-    try:
-        start = response_text.find("[")
-        end = response_text.rfind("]") + 1
-        json_text = response_text[start:end]
-        
-        return json.loads(json_text)
-    except Exception as e:
-        print("JSON parsing failed:", e)
-        return []
+    for i in range(retries):
+        try:
+            response_text = _client.ask(prompt)
+            print(f"RAW GEMINI RESPONSE (Attempt {i+1}):", response_text)  # DEBUG
+            
+            if "ERROR:" in response_text or "429" in response_text:
+                raise ValueError(f"Quota exceeded or error: {response_text[:100]}")
+                
+            start = response_text.find("[")
+            end = response_text.rfind("]") + 1
+            if start == -1 or end <= start:
+                raise ValueError("No JSON array found in response")
+                
+            json_text = response_text[start:end]
+            return json.loads(json_text)
+            
+        except Exception as e:
+            print(f"Gemini error or JSON parsing failed on attempt {i+1}: {e}")
+            if i < retries - 1:
+                time.sleep(10)
+                
+    return []

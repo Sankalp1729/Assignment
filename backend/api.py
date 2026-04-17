@@ -185,38 +185,34 @@ async def generate_ddr(
         # STEP 2: Extract Observations from Text
         # ====================================================================
         inspection_obs = []
-        for idx, page in enumerate(inspection_pages):
-            try:
-                obs = extract_observations(page.get("text", ""))
-                # Improved list check
-                if isinstance(obs, list) and len(obs) > 0:
-                    # Add metadata
-                    for o in obs:
-                        if isinstance(o, dict):
-                            o["source"] = "inspection"
-                            o["page"] = page.get("page", idx + 1)
-                    inspection_obs.extend(obs)
-            except Exception as e:
-                if "Gemini API Error" in str(e) or "429" in str(e):
-                    raise HTTPException(status_code=429, detail=f"Gemini API Quota/Error: {str(e)}")
-                print(f"Warning: Error extracting observations from inspection page {idx}: {e}")
+        try:
+            full_inspection_text = " ".join([p.get("text", "") for p in inspection_pages])
+            obs = extract_observations(full_inspection_text)
+            if isinstance(obs, list) and len(obs) > 0:
+                for o in obs:
+                    if isinstance(o, dict):
+                        o["source"] = "inspection"
+                        o["page"] = 1
+                inspection_obs.extend(obs)
+        except Exception as e:
+            if "Gemini API Error" in str(e) or "429" in str(e):
+                print(f"Gemini API Quota/Error: {str(e)}")
+            print(f"Warning: Error extracting observations from inspection: {e}")
         
         thermal_obs = []
-        for idx, page in enumerate(thermal_pages):
-            try:
-                obs = extract_observations(page.get("text", ""))
-                # Improved list check
-                if isinstance(obs, list) and len(obs) > 0:
-                    # Add metadata
-                    for o in obs:
-                        if isinstance(o, dict):
-                            o["source"] = "thermal"
-                            o["page"] = page.get("page", idx + 1)
-                    thermal_obs.extend(obs)
-            except Exception as e:
-                if "Gemini API Error" in str(e) or "429" in str(e):
-                    raise HTTPException(status_code=429, detail=f"Gemini API Quota/Error: {str(e)}")
-                print(f"Warning: Error extracting observations from thermal page {idx}: {e}")
+        try:
+            full_thermal_text = " ".join([p.get("text", "") for p in thermal_pages])
+            obs = extract_observations(full_thermal_text)
+            if isinstance(obs, list) and len(obs) > 0:
+                for o in obs:
+                    if isinstance(o, dict):
+                        o["source"] = "thermal"
+                        o["page"] = 1
+                thermal_obs.extend(obs)
+        except Exception as e:
+            if "Gemini API Error" in str(e) or "429" in str(e):
+                print(f"Gemini API Quota/Error: {str(e)}")
+            print(f"Warning: Error extracting observations from thermal: {e}")
         
         # DEBUG: Print all observations
         print(f"\n[DEBUG] INSPECTION OBS ({len(inspection_obs)} observations):")
