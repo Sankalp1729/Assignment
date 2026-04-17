@@ -179,18 +179,14 @@ async def generate_ddr(
         for idx, page in enumerate(inspection_pages):
             try:
                 obs = extract_observations(page.get("text", ""))
-                if isinstance(obs, list):
+                # Improved list check
+                if isinstance(obs, list) and len(obs) > 0:
                     # Add metadata
                     for o in obs:
-                        o["source"] = "inspection"
-                        o["page"] = page.get("page", idx + 1)
+                        if isinstance(o, dict):
+                            o["source"] = "inspection"
+                            o["page"] = page.get("page", idx + 1)
                     inspection_obs.extend(obs)
-                elif obs:
-                    inspection_obs.append({
-                        **obs,
-                        "source": "inspection",
-                        "page": page.get("page", idx + 1)
-                    })
             except Exception as e:
                 print(f"Warning: Error extracting observations from inspection page {idx}: {e}")
         
@@ -198,20 +194,22 @@ async def generate_ddr(
         for idx, page in enumerate(thermal_pages):
             try:
                 obs = extract_observations(page.get("text", ""))
-                if isinstance(obs, list):
+                # Improved list check
+                if isinstance(obs, list) and len(obs) > 0:
                     # Add metadata
                     for o in obs:
-                        o["source"] = "thermal"
-                        o["page"] = page.get("page", idx + 1)
+                        if isinstance(o, dict):
+                            o["source"] = "thermal"
+                            o["page"] = page.get("page", idx + 1)
                     thermal_obs.extend(obs)
-                elif obs:
-                    thermal_obs.append({
-                        **obs,
-                        "source": "thermal",
-                        "page": page.get("page", idx + 1)
-                    })
             except Exception as e:
                 print(f"Warning: Error extracting observations from thermal page {idx}: {e}")
+        
+        # DEBUG: Print all observations
+        print(f"\n[DEBUG] INSPECTION OBS ({len(inspection_obs)} observations):")
+        print(inspection_obs)
+        print(f"\n[DEBUG] THERMAL OBS ({len(thermal_obs)} observations):")
+        print(thermal_obs)
         
         total_observations = len(inspection_obs) + len(thermal_obs)
         

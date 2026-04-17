@@ -25,41 +25,36 @@ def extract_observations(page_text: str) -> List[Dict[str, Any]]:
     # Ensure Gemini is initialized
     init_gemini()
     
-    # Truncate to avoid token limits (Gemini handles ~1M tokens but let's be safe)
-    truncated_text = page_text[:2000]
-    
-    prompt = f"""You are an AI system that extracts structured observations from inspection reports.
+    # Use full page text (no truncation)
+    prompt = f"""Extract ALL observations from the text.
 
-From the text below, extract ALL observations about building issues, defects, or problems.
+Each observation must include:
+- area
+- issue
+- description
+- severity_hint
 
-Each observation MUST include:
-- area: The specific location/room/surface (e.g., "Bedroom Wall", "Living Room Ceiling")
-- issue: The type of issue in one or two words (e.g., "Crack", "Moisture Damage", "Thermal Loss")
-- description: A clear, concise description of what was observed
-- severity_hint: The severity level (minor/major/unknown)
+STRICT:
+- Return ONLY JSON array
+- If no data → return empty list []
+- DO NOT return explanation
 
-STRICT RULES:
-- Return ONLY valid JSON array
-- Do NOT include explanations
-- Do NOT include markdown code blocks
-- Each item must have all 4 fields
-- If area/issue cannot be determined, use "unknown"
-- If severity cannot be determined, use "unknown"
-
-Return format - ONLY this, nothing else:
+Example:
 [
   {{
-    "area": "...",
-    "issue": "...",
-    "description": "...",
-    "severity_hint": "minor|major|unknown"
+    "area": "Living Room Wall",
+    "issue": "Crack",
+    "description": "Visible crack near ceiling",
+    "severity_hint": "minor"
   }}
 ]
 
-TEXT TO ANALYZE:
-{truncated_text}"""
+Text:
+{page_text}"""
 
+    print(f"[DEBUG] Extracting observations from {len(page_text)} chars of text")
     result = ask_gemini_json(prompt)
+    print(f"[DEBUG] RAW GEMINI RESPONSE: {result}")
     
     # Validate result is a list
     if isinstance(result, list):
