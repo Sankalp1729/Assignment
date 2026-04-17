@@ -240,7 +240,7 @@ class PDFExtractor:
 
 def extract_text_by_page(pdf_path: str) -> List[Dict[str, Any]]:
     """
-    Quick function to extract text from each page of a PDF.
+    Quick function to extract text from each page of a PDF using PyMuPDF.
     
     Args:
         pdf_path: Path to PDF file
@@ -248,8 +248,19 @@ def extract_text_by_page(pdf_path: str) -> List[Dict[str, Any]]:
     Returns:
         List of dicts with page_num and text
     """
-    extractor = PDFExtractor()
-    return extractor.extract_text_by_page(pdf_path)
+    import fitz  # PyMuPDF
+    doc = fitz.open(pdf_path)
+    pages = []
+    
+    for page_num, page in enumerate(doc, 1):
+        text = page.get_text("text")
+        print(f"PAGE {page_num} TEXT:", text[:200])  # DEBUG
+        pages.append({
+            "page_num": page_num,
+            "text": text
+        })
+        
+    return pages
 
 
 def extract_text_all(pdf_path: str) -> str:
@@ -262,6 +273,6 @@ def extract_text_all(pdf_path: str) -> str:
     Returns:
         Combined text from all pages
     """
-    extractor = PDFExtractor()
-    return extractor.extract_text_only(pdf_path)
+    pages = extract_text_by_page(pdf_path)
+    return " ".join([p.get("text", "") for p in pages])
 
