@@ -296,7 +296,7 @@ async def generate_ddr(
         # ====================================================================
         # Return Response
         # ====================================================================
-        return {
+        response_body = {
             "success": True,
             "document_id": document_id,
             "total_observations": total_observations,
@@ -307,6 +307,20 @@ async def generate_ddr(
             "observations": merged,
             "conflicts": conflicts
         }
+        
+        # DEBUG: Log response being returned
+        print(f"\n[DEBUG] RESPONSE BEING RETURNED:")
+        print(f"  success: {response_body['success']}")
+        print(f"  document_id: {response_body['document_id']}")
+        print(f"  total_observations: {response_body['total_observations']}")
+        print(f"  merged_observations: {response_body['merged_observations']}")
+        print(f"  conflicts_found: {response_body['conflicts_found']}")
+        print(f"  observations count: {len(response_body['observations'])}")
+        print(f"  conflicts count: {len(response_body['conflicts'])}")
+        print(f"  report keys: {list(response_body['report'].keys()) if isinstance(response_body['report'], dict) else 'NOT A DICT'}")
+        print(f"[DEBUG] Response ready to send\n")
+        
+        return response_body
     
     except HTTPException:
         raise

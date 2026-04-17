@@ -155,7 +155,40 @@ export default function DDRGenerator() {
       );
 
       console.log('API Response:', response.data);
-      setReport(response.data);
+      
+      // ★★★ STEP 2: VERIFY DATA STRUCTURE ★★★
+      console.log('\n========== STEP 2: VERIFY RESPONSE STRUCTURE ==========');
+      const responseData = response.data;
+      console.log('Response keys:', Object.keys(responseData));
+      console.log('success:', responseData.success);
+      console.log('document_id:', responseData.document_id);
+      console.log('total_observations:', responseData.total_observations);
+      console.log('merged_observations:', responseData.merged_observations);
+      console.log('conflicts_found:', responseData.conflicts_found);
+      console.log('report type:', typeof responseData.report);
+      console.log('observations type:', typeof responseData.observations);
+      console.log('observations length:', Array.isArray(responseData.observations) ? responseData.observations.length : 'NOT AN ARRAY');
+      console.log('conflicts type:', typeof responseData.conflicts);
+      console.log('conflicts length:', Array.isArray(responseData.conflicts) ? responseData.conflicts.length : 'NOT AN ARRAY');
+      console.log('========================================\n');
+      
+      // ★★★ STEP 3: LOG SAMPLE DATA ★★★
+      console.log('\n========== STEP 3: SAMPLE DATA ==========');
+      if (Array.isArray(responseData.observations) && responseData.observations.length > 0) {
+        console.log('First observation:', responseData.observations[0]);
+      } else {
+        console.log('No observations found in response!');
+      }
+      if (Array.isArray(responseData.conflicts) && responseData.conflicts.length > 0) {
+        console.log('First conflict:', responseData.conflicts[0]);
+      } else {
+        console.log('No conflicts found in response!');
+      }
+      console.log('Report sample:', JSON.stringify(responseData.report).substring(0, 200));
+      console.log('========================================\n');
+      
+      // Set all data correctly
+      setReport(responseData);
       setError(null);
     } catch (err) {
       if (axios.isAxiosError(err)) {
