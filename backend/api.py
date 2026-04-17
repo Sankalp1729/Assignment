@@ -197,6 +197,8 @@ async def generate_ddr(
                             o["page"] = page.get("page", idx + 1)
                     inspection_obs.extend(obs)
             except Exception as e:
+                if "Gemini API Error" in str(e) or "429" in str(e):
+                    raise HTTPException(status_code=429, detail=f"Gemini API Quota/Error: {str(e)}")
                 print(f"Warning: Error extracting observations from inspection page {idx}: {e}")
         
         thermal_obs = []
@@ -212,6 +214,8 @@ async def generate_ddr(
                             o["page"] = page.get("page", idx + 1)
                     thermal_obs.extend(obs)
             except Exception as e:
+                if "Gemini API Error" in str(e) or "429" in str(e):
+                    raise HTTPException(status_code=429, detail=f"Gemini API Quota/Error: {str(e)}")
                 print(f"Warning: Error extracting observations from thermal page {idx}: {e}")
         
         # DEBUG: Print all observations

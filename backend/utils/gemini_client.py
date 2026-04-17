@@ -249,11 +249,17 @@ def ask_gemini_json(prompt: str) -> Any:
     print("RAW GEMINI RESPONSE:", response_text)  # DEBUG
     
     try:
+        if "ERROR:" in response_text or "429" in response_text:
+            return {"error": response_text}
+            
         start = response_text.find("[")
         end = response_text.rfind("]") + 1
         json_text = response_text[start:end]
         
+        if start == -1 or end <= start:
+            return {"error": "No JSON array found in response"}
+            
         return json.loads(json_text)
     except Exception as e:
         print("JSON parsing failed:", e)
-        return []
+        return {"error": f"JSON parse error: {str(e)}"}

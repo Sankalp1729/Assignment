@@ -74,8 +74,9 @@ Text:
                 observations.append(clean_obs)
     
     elif isinstance(result, dict) and "error" in result:
-        print(f"  ⚠ Gemini error: {result.get('error')}")
-        observations = []
+        error_msg = result.get('error')
+        print(f"  ⚠ Gemini error: {error_msg}")
+        raise ValueError(f"Gemini API Error: {error_msg}")
     
     else:
         print(f"  ⚠ Unexpected result type: {type(result)}")
