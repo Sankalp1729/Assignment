@@ -26,24 +26,26 @@ def extract_observations(page_text: str) -> List[Dict[str, Any]]:
     init_gemini()
     
     prompt = f"""
-Extract ALL observations from the text.
+Extract detailed observations from the text.
 
-Return ONLY a JSON array.
+Each observation must include:
+- area (specific location like "Living Room Wall")
+- issue (specific problem like "crack", "leakage")
+- description (clear explanation from text)
+- severity_hint (minor/major based on wording)
 
-Each object must contain:
-- area
-- issue
-- description
-- severity_hint
-
-If no observations → return []
+STRICT RULES:
+- Use ONLY information from text
+- DO NOT use generic words like "detected issue"
+- DO NOT return placeholders
+- Return ONLY JSON list
 
 Example:
 [
   {{
     "area": "Living Room Wall",
     "issue": "Crack",
-    "description": "Visible crack near ceiling",
+    "description": "Visible structural crack near ceiling corner",
     "severity_hint": "minor"
   }}
 ]
@@ -78,14 +80,6 @@ Text:
     else:
         print(f"  ⚠ Unexpected result type: {type(result)}")
         observations = []
-
-    if not observations:
-        observations = [{
-            "area": "General Area",
-            "issue": "Detected issue",
-            "description": page_text[:200],
-            "severity_hint": "unknown"
-        }]
 
     print("FINAL OBS:", observations)
     return observations

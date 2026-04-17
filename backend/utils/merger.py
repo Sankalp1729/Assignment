@@ -112,10 +112,10 @@ def merge_observations(
             therm_description = therm.get("description", "")
             
             merged.append({
-                "area": ins_area,
+                "area": ins_area if ins_area.strip() != "" else therm.get("area", "unknown"),
                 "inspection_issue": ins_issue,
                 "thermal_issue": therm_issue,
-                "description": f"{ins_description} | {therm_description}",
+                "description": ins_description + " | " + therm_description,
                 "severity_hint": ins_severity,
                 "thermal_flag": True,
                 "matched": True,
