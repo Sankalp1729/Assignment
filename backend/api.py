@@ -192,7 +192,7 @@ async def generate_ddr(
         inspection_obs = []
         try:
             full_inspection_text = " ".join([p.get("text", "") for p in inspection_pages])
-            obs = extract_observations(full_inspection_text)
+            obs = extract_observations(full_inspection_text, source_type="inspection")
             if isinstance(obs, list) and len(obs) > 0:
                 for o in obs:
                     if isinstance(o, dict):
@@ -207,7 +207,7 @@ async def generate_ddr(
         thermal_obs = []
         try:
             full_thermal_text = " ".join([p.get("text", "") for p in thermal_pages])
-            obs = extract_observations(full_thermal_text)
+            obs = extract_observations(full_thermal_text, source_type="thermal")
             if isinstance(obs, list) and len(obs) > 0:
                 for o in obs:
                     if isinstance(o, dict):
