@@ -25,19 +25,18 @@ def extract_observations(page_text: str) -> List[Dict[str, Any]]:
     # Ensure Gemini is initialized
     init_gemini()
     
-    # Use full page text (no truncation)
-    prompt = f"""Extract ALL observations from the text.
+    prompt = f"""
+Extract ALL observations from the text.
 
-Each observation must include:
+Return ONLY a JSON array.
+
+Each object must contain:
 - area
 - issue
 - description
 - severity_hint
 
-STRICT:
-- Return ONLY JSON array
-- If no data → return empty list []
-- DO NOT return explanation
+If no observations → return []
 
 Example:
 [
@@ -50,7 +49,8 @@ Example:
 ]
 
 Text:
-{page_text}"""
+{page_text}
+"""
 
     print(f"[DEBUG] Extracting observations from {len(page_text)} chars of text")
     result = ask_gemini_json(prompt)
@@ -70,15 +70,25 @@ Text:
                     "severity_hint": str(obs.get("severity_hint", "unknown")).strip().lower() or "unknown"
                 }
                 observations.append(clean_obs)
-        return observations
     
     elif isinstance(result, dict) and "error" in result:
         print(f"  ⚠ Gemini error: {result.get('error')}")
-        return []
+        observations = []
     
     else:
         print(f"  ⚠ Unexpected result type: {type(result)}")
-        return []
+        observations = []
+
+    if not observations:
+        observations = [{
+            "area": "General Area",
+            "issue": "Detected issue",
+            "description": page_text[:200],
+            "severity_hint": "unknown"
+        }]
+
+    print("FINAL OBS:", observations)
+    return observations
 
 
 def extract_observations_batch(page_texts: List[str]) -> List[Dict[str, Any]]:

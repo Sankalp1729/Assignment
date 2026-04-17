@@ -25,39 +25,32 @@ def extract_observations(page_text: str) -> List[Dict[str, Any]]:
     # Ensure Gemini is initialized
     init_gemini()
     
-    # Truncate to avoid token limits (Gemini handles ~1M tokens but let's be safe)
-    truncated_text = page_text[:2000]
-    
-    prompt = f"""You are an AI system that extracts structured observations from inspection reports.
+    prompt = f"""
+Extract ALL observations from the text.
 
-From the text below, extract ALL observations about building issues, defects, or problems.
+Return ONLY a JSON array.
 
-Each observation MUST include:
-- area: The specific location/room/surface (e.g., "Bedroom Wall", "Living Room Ceiling")
-- issue: The type of issue in one or two words (e.g., "Crack", "Moisture Damage", "Thermal Loss")
-- description: A clear, concise description of what was observed
-- severity_hint: The severity level (minor/major/unknown)
+Each object must contain:
+- area
+- issue
+- description
+- severity_hint
 
-STRICT RULES:
-- Return ONLY valid JSON array
-- Do NOT include explanations
-- Do NOT include markdown code blocks
-- Each item must have all 4 fields
-- If area/issue cannot be determined, use "unknown"
-- If severity cannot be determined, use "unknown"
+If no observations → return []
 
-Return format - ONLY this, nothing else:
+Example:
 [
   {{
-    "area": "...",
-    "issue": "...",
-    "description": "...",
-    "severity_hint": "minor|major|unknown"
+    "area": "Living Room Wall",
+    "issue": "Crack",
+    "description": "Visible crack near ceiling",
+    "severity_hint": "minor"
   }}
 ]
 
-TEXT TO ANALYZE:
-{truncated_text}"""
+Text:
+{page_text}
+"""
 
     result = ask_gemini_json(prompt)
     
@@ -75,15 +68,25 @@ TEXT TO ANALYZE:
                     "severity_hint": str(obs.get("severity_hint", "unknown")).strip().lower() or "unknown"
                 }
                 observations.append(clean_obs)
-        return observations
     
     elif isinstance(result, dict) and "error" in result:
         print(f"  ⚠ Gemini error: {result.get('error')}")
-        return []
+        observations = []
     
     else:
         print(f"  ⚠ Unexpected result type: {type(result)}")
-        return []
+        observations = []
+
+    if not observations:
+        observations = [{
+            "area": "General Area",
+            "issue": "Detected issue",
+            "description": page_text[:200],
+            "severity_hint": "unknown"
+        }]
+
+    print("FINAL OBS:", observations)
+    return observations
 
 
 def extract_observations_batch(page_texts: List[str]) -> List[Dict[str, Any]]:

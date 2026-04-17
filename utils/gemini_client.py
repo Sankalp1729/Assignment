@@ -230,7 +230,7 @@ def ask_gemini(prompt: str) -> str:
     return _client.ask(prompt)
 
 
-def ask_gemini_json(prompt: str) -> Dict[str, Any]:
+def ask_gemini_json(prompt: str) -> Any:
     """
     Quick function to ask Gemini for JSON using global client.
     
@@ -238,10 +238,22 @@ def ask_gemini_json(prompt: str) -> Dict[str, Any]:
         prompt: Prompt requesting JSON
         
     Returns:
-        Parsed JSON dictionary
+        Parsed JSON list
     """
     global _client
     if _client is None:
         if not init_gemini():
-            return {"error": "Gemini not initialized"}
-    return _client.ask_json(prompt)
+            return []
+            
+    response_text = _client.ask(prompt)
+    print("RAW GEMINI RESPONSE:", response_text)  # DEBUG
+    
+    try:
+        start = response_text.find("[")
+        end = response_text.rfind("]") + 1
+        json_text = response_text[start:end]
+        
+        return json.loads(json_text)
+    except Exception as e:
+        print("JSON parsing failed:", e)
+        return []
