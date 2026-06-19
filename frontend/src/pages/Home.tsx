@@ -34,11 +34,17 @@ export default function Home() {
         setDownloadUrl(response.data.downloadUrl);
         toast.success("Detailed Diagnostic Report (DDR) generated successfully!");
       } else {
-        toast.error(response.data.error || "Failed to generate report.");
+        const errorMsg = typeof response.data.error === "object"
+          ? (response.data.error.message || JSON.stringify(response.data.error))
+          : (response.data.error || "Failed to generate report.");
+        toast.error(errorMsg);
       }
     } catch (err: any) {
       console.error(err);
-      toast.error(err.response?.data?.error || "Error uploading or processing the reports.");
+      const errorMsg = typeof err.response?.data?.error === "object"
+        ? (err.response?.data?.error?.message || JSON.stringify(err.response?.data?.error))
+        : (err.response?.data?.error || err.message || "Error uploading or processing the reports.");
+      toast.error(errorMsg);
     } finally {
       setIsProcessing(false);
     }
