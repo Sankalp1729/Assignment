@@ -30,13 +30,22 @@ st.markdown("""
     @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Inter:wght@300;400;500;700&display=swap');
 
     /* Global Typography overrides */
-    html, body, [class*="css"] {
+    html, body {
         font-family: 'Inter', sans-serif;
+        color: #f1f5f9;
     }
     
     h1, h2, h3, h4, h5, h6 {
         font-family: 'Outfit', sans-serif;
         font-weight: 600;
+        color: #ffffff !important;
+    }
+
+    /* Target markdown paragraphs and lists for high readability */
+    .stMarkdown, [data-testid="stMarkdownContainer"] p, [data-testid="stMarkdownContainer"] li {
+        color: #cbd5e1 !important;
+        font-size: 14.5px;
+        line-height: 1.7;
     }
 
     /* Main background accent */
@@ -342,30 +351,13 @@ MOCK_SAMPLE_DDR = {
   ]
 }
 
-# Sidebar configuration
-st.sidebar.markdown("### ⚙️ Engine Settings")
-st.sidebar.info("This application operates entirely in Python, processing PDF extraction and Word compilation locally.")
-
-api_key_input = st.sidebar.text_input("Anthropic API Key", type="password", help="Provide your Anthropic API key to run active Claude analysis on custom uploaded PDFs.")
-
-# Resolve API Key
-def get_api_key():
-    if api_key_input.strip():
-        return api_key_input.strip()
-    # Fallback to st.secrets
-    try:
-        if "ANTHROPIC_API_KEY" in st.secrets:
-            return st.secrets["ANTHROPIC_API_KEY"]
-    except Exception:
-        pass
-    # Fallback to environment variable
-    return os.environ.get("ANTHROPIC_API_KEY")
-
-api_key = get_api_key()
-if api_key:
-    st.sidebar.success("Anthropic Key loaded. App will use Claude Sonnet.")
-else:
-    st.sidebar.info("No Anthropic Key. App will use local programmatic correlation (instant & free).")
+# Resolve API Key silently from secrets or environment
+api_key = os.environ.get("ANTHROPIC_API_KEY")
+try:
+    if not api_key and "ANTHROPIC_API_KEY" in st.secrets:
+        api_key = st.secrets["ANTHROPIC_API_KEY"]
+except Exception:
+    pass
 
 # Top Brand Header
 st.markdown("""
@@ -401,13 +393,6 @@ with action_col2:
     # Disable active generate button if files are missing
     generate_disabled = not (inspection_file and thermal_file)
     generate_btn = st.button("🚀 Compile DDR Client Report", use_container_width=True, type="primary", disabled=generate_disabled)
-    
-    if not generate_disabled:
-        if api_key:
-            st.caption("<div style='text-align:center; color:#10b981;'>Ready! Running in AI Mode (Claude Sonnet).</div>", unsafe_allow_html=True)
-        else:
-            st.caption("<div style='text-align:center; color:#3b82f6;'>Ready! Running in Local Programmatic Mode (instant & free).</div>", unsafe_allow_html=True)
-        
     sample_btn = st.button("📂 Load Pre-Compiled Sample Report", use_container_width=True)
 
 # Initialize Session State
@@ -629,7 +614,7 @@ if st.session_state.ddr_data:
             </div>
             """, unsafe_allow_html=True)
     else:
-        st.info("No severity assessments generated.")
+        st.markdown('<div style="background:rgba(59, 130, 246, 0.1); border:1px solid rgba(59, 130, 246, 0.2); border-radius:12px; padding:16px; color:#cbd5e1; font-size:13.5px;">ℹ️ No severity assessments generated.</div>', unsafe_allow_html=True)
         
     st.markdown("<br>", unsafe_allow_html=True)
     
@@ -648,7 +633,7 @@ if st.session_state.ddr_data:
             </div>
             """, unsafe_allow_html=True)
     else:
-        st.info("No recommended actions generated.")
+        st.markdown('<div style="background:rgba(59, 130, 246, 0.1); border:1px solid rgba(59, 130, 246, 0.2); border-radius:12px; padding:16px; color:#cbd5e1; font-size:13.5px;">ℹ️ No recommended actions generated.</div>', unsafe_allow_html=True)
         
     st.markdown("<br>", unsafe_allow_html=True)
     
@@ -666,13 +651,21 @@ if st.session_state.ddr_data:
     st.markdown("### 7. Missing or Unclear Information")
     missing_info = ddr_data.get("missing_or_unclear_information", [])
     if missing_info:
-        warning_content = "<strong>Flagged items needing verification:</strong><ul style='margin-top:8px; margin-bottom:0; padding-left:20px; font-size:13px; line-height:1.6; color:#fef08a;'>"
+        warning_content = """
+        <div style="background: rgba(245, 158, 11, 0.1); border: 1px solid rgba(245, 158, 11, 0.2); border-radius: 12px; padding: 16px; margin-bottom: 20px;">
+            <div style="color: #fde047; font-weight: 700; font-size: 14px; margin-bottom: 8px;">⚠️ Flagged items needing verification:</div>
+            <ul style="color: #cbd5e1; font-size: 13.5px; line-height: 1.6; margin: 0; padding-left: 20px;">
+        """
         for item in missing_info:
             warning_content += f"<li>{item}</li>"
-        warning_content += "</ul>"
-        st.warning(warning_content, icon="⚠️")
+        warning_content += "</ul></div>"
+        st.markdown(warning_content, unsafe_allow_html=True)
     else:
-        st.info("No missing or unclear information was flagged.")
+        st.markdown("""
+        <div style="background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 12px; padding: 16px; color: #cbd5e1; font-size: 13.5px;">
+            ℹ️ No missing or unclear information was flagged.
+        </div>
+        """, unsafe_allow_html=True)
         
     # Download button at the bottom
     st.markdown("<br><hr style='border-color:rgba(255,255,255,0.05);'><br>", unsafe_allow_html=True)
