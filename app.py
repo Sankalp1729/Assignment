@@ -31,7 +31,7 @@ with col1:
 with col2:
     thermal_file = st.file_uploader("2. Upload Thermal Images PDF", type=["pdf"])
 
-st.markdown("<br>", unsafe_ok=True)
+st.markdown("<br>", unsafe_allow_html=True)
 
 # Generate Button
 action_col1, action_col2, action_col3 = st.columns([1, 2, 1])
