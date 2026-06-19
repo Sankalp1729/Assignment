@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 # Import local modules
 from extractor import extract_pdf
-from ai_generator import generate_ddr_data
+from ai_generator import generate_ddr_data, generate_programmatic_ddr
 from docx_export import export_to_docx
 
 # Inject custom Google Fonts and custom CSS for rich aesthetics
@@ -363,9 +363,9 @@ def get_api_key():
 
 api_key = get_api_key()
 if api_key:
-    st.sidebar.success("Anthropic Key loaded successfully!")
+    st.sidebar.success("Anthropic Key loaded. App will use Claude Sonnet.")
 else:
-    st.sidebar.warning("No Anthropic Key detected. Custom compilation is locked, but you can load the sample report immediately.")
+    st.sidebar.info("No Anthropic Key. App will use local programmatic correlation (instant & free).")
 
 # Top Brand Header
 st.markdown("""
@@ -398,12 +398,15 @@ st.markdown("<br>", unsafe_allow_html=True)
 # Generate Actions Columns
 action_col1, action_col2, action_col3 = st.columns([1, 2, 1])
 with action_col2:
-    # Disable active generate button if API key or files are missing
-    generate_disabled = not (inspection_file and thermal_file and api_key)
+    # Disable active generate button if files are missing
+    generate_disabled = not (inspection_file and thermal_file)
     generate_btn = st.button("🚀 Compile DDR Client Report", use_container_width=True, type="primary", disabled=generate_disabled)
     
-    if generate_disabled and inspection_file and thermal_file:
-        st.caption("<div style='text-align:center; color:#f87171;'>Please provide an Anthropic API Key in the sidebar to enable compilation.</div>", unsafe_allow_html=True)
+    if not generate_disabled:
+        if api_key:
+            st.caption("<div style='text-align:center; color:#10b981;'>Ready! Running in AI Mode (Claude Sonnet).</div>", unsafe_allow_html=True)
+        else:
+            st.caption("<div style='text-align:center; color:#3b82f6;'>Ready! Running in Local Programmatic Mode (instant & free).</div>", unsafe_allow_html=True)
         
     sample_btn = st.button("📂 Load Pre-Compiled Sample Report", use_container_width=True)
 
@@ -427,19 +430,17 @@ def run_compilation(insp_path, therm_path, use_mock_ai=False):
         logger.info("Extracting thermal report...")
         thermal_data = extract_pdf(therm_path)
         
-        # Step 3: Run Claude AI analysis or use pre-compiled mock
-        status_box.update(label="Analyzing with AI (Claude Sonnet)...", state="running")
-        logger.info("Running AI analysis...")
+        # Step 3: Run Correlation analysis
+        status_box.update(label="Running correlation analysis...", state="running")
+        logger.info("Running correlation analysis...")
         if use_mock_ai:
-            ddr_data = MOCK_SAMPLE_DDR
+            ddr_data = generate_programmatic_ddr(inspection_data, thermal_data)
         else:
-            # Temporarily inject API key for the generator
-            os.environ["ANTHROPIC_API_KEY"] = api_key
-            ddr_data = generate_ddr_data(inspection_data, thermal_data)
+            ddr_data = generate_ddr_data(inspection_data, thermal_data, api_key=api_key)
             
         if not ddr_data or "error" in ddr_data:
-            status_box.update(label="AI Analysis Failed", state="error")
-            raise ValueError(f"AI Generator error: {ddr_data.get('message') if ddr_data else 'Unknown'}")
+            status_box.update(label="Correlation Analysis Failed", state="error")
+            raise ValueError(f"Correlation error: {ddr_data.get('message') if ddr_data else 'Unknown'}")
             
         # Step 4: Build DOCX report with embedded images
         status_box.update(label="Building Word report document...", state="running")
