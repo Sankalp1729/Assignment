@@ -1,2 +1,6 @@
 streamlit
-requests
+pikepdf
+pdfplumber
+anthropic
+python-docx
+pillow
