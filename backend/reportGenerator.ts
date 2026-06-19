@@ -26,7 +26,7 @@ export async function generateWordReport(data: DDRData, uploadsDir: string, outp
       text,
       heading: level,
       spacing: { before: 240, after: 120 },
-      keepWithNext: true
+      keepNext: true
     });
   };
 
@@ -155,7 +155,8 @@ export async function generateWordReport(data: DDRData, uploadsDir: string, outp
             children: [
               new ImageRun({
                 data: imgBuffer,
-                transformation: { width: 180, height: 135 }
+                transformation: { width: 180, height: 135 },
+                type: "jpg"
               }),
               new TextRun({ text: `\nPhoto ${pNum}: Negative Side`, font: "Arial", size: 16 })
             ],
@@ -178,7 +179,8 @@ export async function generateWordReport(data: DDRData, uploadsDir: string, outp
             children: [
               new ImageRun({
                 data: imgBuffer,
-                transformation: { width: 180, height: 135 }
+                transformation: { width: 180, height: 135 },
+                type: "jpg"
               }),
               new TextRun({ text: `\nPhoto ${pNum}: Positive Side`, font: "Arial", size: 16 })
             ],
@@ -204,7 +206,8 @@ export async function generateWordReport(data: DDRData, uploadsDir: string, outp
             children: [
               new ImageRun({
                 data: imgBuffer,
-                transformation: { width: 180, height: 135 }
+                transformation: { width: 180, height: 135 },
+                type: "jpg"
               }),
               new TextRun({ text: `\nThermal Image: ${fname} (Hotspot/Coldspot)`, font: "Arial", size: 16 })
             ],
@@ -224,7 +227,8 @@ export async function generateWordReport(data: DDRData, uploadsDir: string, outp
             children: [
               new ImageRun({
                 data: imgBuffer,
-                transformation: { width: 180, height: 135 }
+                transformation: { width: 180, height: 135 },
+                type: "jpg"
               }),
               new TextRun({ text: `\nReference Camera Photo`, font: "Arial", size: 16 })
             ],

@@ -101,7 +101,7 @@ export async function parseReports(
     const negPhotosSection = content.split(/Positive side Description/i)[0] || "";
     const negPhotoNums = negPhotosSection.match(/Photo\s*(\d+)/gi);
     if (negPhotoNums) {
-      negPhotoNums.forEach(p => {
+      negPhotoNums.forEach((p: string) => {
         const num = parseInt(p.match(/\d+/)![0], 10);
         if (!negativePhotos.includes(num)) negativePhotos.push(num);
       });
@@ -117,7 +117,7 @@ export async function parseReports(
     const posPhotosSection = content.split(/Positive side Description/i)[1] || "";
     const posPhotoNums = posPhotosSection.match(/Photo\s*(\d+)/gi);
     if (posPhotoNums) {
-      posPhotoNums.forEach(p => {
+      posPhotoNums.forEach((p: string) => {
         const num = parseInt(p.match(/\d+/)![0], 10);
         if (!positivePhotos.includes(num)) positivePhotos.push(num);
       });
@@ -226,9 +226,9 @@ export async function parseReports(
   
   // We extract images from pages index 2 to 5 (VLM pages with inline photos)
   for (const pageIndex of [2, 3, 4, 5]) {
-    const pageObj = sampleImages.pages.find(p => p.pageNumber === pageIndex + 1);
+    const pageObj = sampleImages.pages.find((p: any) => p.pageNumber === pageIndex + 1);
     if (pageObj) {
-      pageObj.images.forEach(img => {
+      pageObj.images.forEach((img: any) => {
         if (isPhoto(img.width, img.height)) {
           photoList.push(Buffer.from(img.data));
         }
@@ -299,7 +299,7 @@ export async function parseReports(
     thermalList.push({ filename, hotspot, coldspot, emissivity, reflectedTemp });
 
     // Save images (Image 0 = Thermal snapshot, Image 1 = Reference photo)
-    const pageObj = thermalImages.pages.find(p => p.pageNumber === pageNum);
+    const pageObj = thermalImages.pages.find((p: any) => p.pageNumber === pageNum);
     if (pageObj && pageObj.images.length >= 2) {
       const thermalImg = pageObj.images[0];
       const refImg = pageObj.images[1];
