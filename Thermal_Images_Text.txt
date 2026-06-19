@@ -1,0 +1,360 @@
+28.8 °C
+23.4 °C
+27/09/22
+Hotspot : 28.8 °C
+Coldspot : 23.4 °C
+Emissivity : 0.94
+Reflected temperature : 23 °C
+Thermal image : RB02380X.JPG Device : GTC 400 C Professional Serial Number : 02700034772
+1
+
+-- 1 of 30 --
+
+27.4 °C
+22.4 °C
+27/09/22
+Hotspot : 27.4 °C
+Coldspot : 22.4 °C
+Emissivity : 0.94
+Reflected temperature : 23 °C
+Thermal image : RB02386X.JPG Device : GTC 400 C Professional Serial Number : 02700034772
+2
+
+-- 2 of 30 --
+
+27 °C
+22 °C
+27/09/22
+Hotspot : 27 °C
+Coldspot : 22 °C
+Emissivity : 0.94
+Reflected temperature : 23 °C
+Thermal image : RB02395X.JPG Device : GTC 400 C Professional Serial Number : 02700034772
+3
+
+-- 3 of 30 --
+
+25.7 °C
+20.7 °C
+27/09/22
+Hotspot : 25.7 °C
+Coldspot : 20.7 °C
+Emissivity : 0.94
+Reflected temperature : 23 °C
+Thermal image : RB02402X.JPG Device : GTC 400 C Professional Serial Number : 02700034772
+4
+
+-- 4 of 30 --
+
+25.5 °C
+20.5 °C
+27/09/22
+Hotspot : 25.5 °C
+Coldspot : 20.5 °C
+Emissivity : 0.94
+Reflected temperature : 23 °C
+Thermal image : RB02403X.JPG Device : GTC 400 C Professional Serial Number : 02700034772
+5
+
+-- 5 of 30 --
+
+25.8 °C
+20.8 °C
+27/09/22
+Hotspot : 25.8 °C
+Coldspot : 20.8 °C
+Emissivity : 0.94
+Reflected temperature : 23 °C
+Thermal image : RB02404X.JPG Device : GTC 400 C Professional Serial Number : 02700034772
+6
+
+-- 6 of 30 --
+
+26.2 °C
+21.2 °C
+27/09/22
+Hotspot : 26.2 °C
+Coldspot : 21.2 °C
+Emissivity : 0.94
+Reflected temperature : 23 °C
+Thermal image : RB02405X.JPG Device : GTC 400 C Professional Serial Number : 02700034772
+7
+
+-- 7 of 30 --
+
+26.5 °C
+21.5 °C
+27/09/22
+Hotspot : 26.5 °C
+Coldspot : 21.5 °C
+Emissivity : 0.94
+Reflected temperature : 23 °C
+Thermal image : RB02406X.JPG Device : GTC 400 C Professional Serial Number : 02700034772
+8
+
+-- 8 of 30 --
+
+25.8 °C
+20.8 °C
+27/09/22
+Hotspot : 25.8 °C
+Coldspot : 20.8 °C
+Emissivity : 0.94
+Reflected temperature : 23 °C
+Thermal image : RB02392X.JPG Device : GTC 400 C Professional Serial Number : 02700034772
+9
+
+-- 9 of 30 --
+
+25.9 °C
+20.9 °C
+27/09/22
+Hotspot : 25.9 °C
+Coldspot : 20.9 °C
+Emissivity : 0.94
+Reflected temperature : 23 °C
+Thermal image : RB02393X.JPG Device : GTC 400 C Professional Serial Number : 02700034772
+10
+
+-- 10 of 30 --
+
+26 °C
+21 °C
+27/09/22
+Hotspot : 26 °C
+Coldspot : 21 °C
+Emissivity : 0.94
+Reflected temperature : 23 °C
+Thermal image : RB02394X.JPG Device : GTC 400 C Professional Serial Number : 02700034772
+11
+
+-- 11 of 30 --
+
+26.1 °C
+21.1 °C
+27/09/22
+Hotspot : 26.1 °C
+Coldspot : 21.1 °C
+Emissivity : 0.94
+Reflected temperature : 23 °C
+Thermal image : RB02396X.JPG Device : GTC 400 C Professional Serial Number : 02700034772
+12
+
+-- 12 of 30 --
+
+26.3 °C
+21.3 °C
+27/09/22
+Hotspot : 26.3 °C
+Coldspot : 21.3 °C
+Emissivity : 0.94
+Reflected temperature : 23 °C
+Thermal image : RB02397X.JPG Device : GTC 400 C Professional Serial Number : 02700034772
+13
+
+-- 13 of 30 --
+
+25.6 °C
+20.6 °C
+27/09/22
+Hotspot : 25.6 °C
+Coldspot : 20.6 °C
+Emissivity : 0.94
+Reflected temperature : 23 °C
+Thermal image : RB02398X.JPG Device : GTC 400 C Professional Serial Number : 02700034772
+14
+
+-- 14 of 30 --
+
+26.5 °C
+21.5 °C
+27/09/22
+Hotspot : 26.5 °C
+Coldspot : 21.5 °C
+Emissivity : 0.94
+Reflected temperature : 23 °C
+Thermal image : RB02399X.JPG Device : GTC 400 C Professional Serial Number : 02700034772
+15
+
+-- 15 of 30 --
+
+25.2 °C
+20.2 °C
+27/09/22
+Hotspot : 25.2 °C
+Coldspot : 20.2 °C
+Emissivity : 0.94
+Reflected temperature : 23 °C
+Thermal image : RB02400X.JPG Device : GTC 400 C Professional Serial Number : 02700034772
+16
+
+-- 16 of 30 --
+
+25.6 °C
+20.6 °C
+27/09/22
+Hotspot : 25.6 °C
+Coldspot : 20.6 °C
+Emissivity : 0.94
+Reflected temperature : 23 °C
+Thermal image : RB02401X.JPG Device : GTC 400 C Professional Serial Number : 02700034772
+17
+
+-- 17 of 30 --
+
+27 °C
+22 °C
+27/09/22
+Hotspot : 27 °C
+Coldspot : 22 °C
+Emissivity : 0.94
+Reflected temperature : 23 °C
+Thermal image : RB02381X.JPG Device : GTC 400 C Professional Serial Number : 02700034772
+18
+
+-- 18 of 30 --
+
+26.7 °C
+21.7 °C
+27/09/22
+Hotspot : 26.7 °C
+Coldspot : 21.7 °C
+Emissivity : 0.94
+Reflected temperature : 23 °C
+Thermal image : RB02382X.JPG Device : GTC 400 C Professional Serial Number : 02700034772
+19
+
+-- 19 of 30 --
+
+26.5 °C
+21.5 °C
+27/09/22
+Hotspot : 26.5 °C
+Coldspot : 21.5 °C
+Emissivity : 0.94
+Reflected temperature : 23 °C
+Thermal image : RB02383X.JPG Device : GTC 400 C Professional Serial Number : 02700034772
+20
+
+-- 20 of 30 --
+
+27.3 °C
+22.3 °C
+27/09/22
+Hotspot : 27.3 °C
+Coldspot : 22.3 °C
+Emissivity : 0.94
+Reflected temperature : 23 °C
+Thermal image : RB02384X.JPG Device : GTC 400 C Professional Serial Number : 02700034772
+21
+
+-- 21 of 30 --
+
+27.3 °C
+22.3 °C
+27/09/22
+Hotspot : 27.3 °C
+Coldspot : 22.3 °C
+Emissivity : 0.94
+Reflected temperature : 23 °C
+Thermal image : RB02385X.JPG Device : GTC 400 C Professional Serial Number : 02700034772
+22
+
+-- 22 of 30 --
+
+25.2 °C
+20.2 °C
+27/09/22
+Hotspot : 25.2 °C
+Coldspot : 20.2 °C
+Emissivity : 0.94
+Reflected temperature : 23 °C
+Thermal image : RB02387X.JPG Device : GTC 400 C Professional Serial Number : 02700034772
+23
+
+-- 23 of 30 --
+
+25.1 °C
+20.1 °C
+27/09/22
+Hotspot : 25.1 °C
+Coldspot : 20.1 °C
+Emissivity : 0.94
+Reflected temperature : 23 °C
+Thermal image : RB02388X.JPG Device : GTC 400 C Professional Serial Number : 02700034772
+24
+
+-- 24 of 30 --
+
+25.9 °C
+20.9 °C
+27/09/22
+Hotspot : 25.9 °C
+Coldspot : 20.9 °C
+Emissivity : 0.94
+Reflected temperature : 23 °C
+Thermal image : RB02389X.JPG Device : GTC 400 C Professional Serial Number : 02700034772
+25
+
+-- 25 of 30 --
+
+26.9 °C
+21.9 °C
+27/09/22
+Hotspot : 26.9 °C
+Coldspot : 21.9 °C
+Emissivity : 0.94
+Reflected temperature : 23 °C
+Thermal image : RB02390X.JPG Device : GTC 400 C Professional Serial Number : 02700034772
+26
+
+-- 26 of 30 --
+
+25.6 °C
+20.6 °C
+27/09/22
+Hotspot : 25.6 °C
+Coldspot : 20.6 °C
+Emissivity : 0.94
+Reflected temperature : 23 °C
+Thermal image : RB02391X.JPG Device : GTC 400 C Professional Serial Number : 02700034772
+27
+
+-- 27 of 30 --
+
+26.9 °C
+21.9 °C
+27/09/22
+Hotspot : 26.9 °C
+Coldspot : 21.9 °C
+Emissivity : 0.94
+Reflected temperature : 23 °C
+Thermal image : RB02377X.JPG Device : GTC 400 C Professional Serial Number : 02700034772
+28
+
+-- 28 of 30 --
+
+26.4 °C
+21.4 °C
+27/09/22
+Hotspot : 26.4 °C
+Coldspot : 21.4 °C
+Emissivity : 0.94
+Reflected temperature : 23 °C
+Thermal image : RB02378X.JPG Device : GTC 400 C Professional Serial Number : 02700034772
+29
+
+-- 29 of 30 --
+
+27.8 °C
+22.8 °C
+27/09/22
+Hotspot : 27.8 °C
+Coldspot : 22.8 °C
+Emissivity : 0.94
+Reflected temperature : 23 °C
+Thermal image : RB02379X.JPG Device : GTC 400 C Professional Serial Number : 02700034772
+30
+
+-- 30 of 30 --
+
